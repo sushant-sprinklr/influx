@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "app": "nodemon connect.js"
+  },
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.27.0",
+    "@influxdata/influxdb-client-apis": "^1.27.0",
+    "assert": "^2.0.0",
+    "dotenv": "^16.0.1",
+    "nodemon": "^2.0.19",
+    "ws": "^8.8.1"
+  }
+}
