@@ -16,13 +16,12 @@ ws.addEventListener("message", (e) => {
   var dataString = e.data.toString();
   dataOut = JSON.parse(dataString).data[0];
   //   console.log(dataOut);
-
-  //     .timestamp(dataOut.request_time) -- request_time is an 'invalid timestamp'
-
+  
+  let influxTime = new Date(dataOut.request_time).valueOf();
   let point = new Point("measurement1")
-    .tag("http_status_code", dataOut.http_status_code)
-    .tag("uri", dataOut.uri)
-    .tag("request_time", dataOut.request_time)
+    .timestamp(influxTime)
+    .intField("http_status_code", dataOut.http_status_code)
+    .stringField("uri", dataOut.uri)
     .stringField("request_host_name", dataOut.request_host_name)
     .stringField("src_ip", dataOut.src_ip)
     .stringField("request_uuid", dataOut.request_uuid)
