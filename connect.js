@@ -16,7 +16,7 @@ ws.addEventListener("message", (e) => {
   var dataString = e.data.toString();
   dataOut = JSON.parse(dataString).data[0];
   //   console.log(dataOut);
-  
+
   let influxTime = new Date(dataOut.request_time).valueOf();
   let point = new Point("measurement1")
     .timestamp(influxTime)
@@ -70,36 +70,3 @@ ws.addEventListener("message", (e) => {
   writeApi.flush();
   console.log(point);
 });
-
-// for (let i = 0; i < 5; i++) {
-//   let point = new Point("measurement1")
-//     .tag("tagname1", 5)
-//     .intField("field1", i + 1);
-
-//   void setTimeout(() => {
-//     writeApi.writePoint(point);
-//   }, i * 1000); // separate points by 1 second
-
-//   void setTimeout(() => {
-//     writeApi.flush();
-//   }, 5000);
-// }
-
-// queryClient = client.getQueryApi(org);
-// fluxQuery = `from(bucket: "testBucket")
-//  |> range(start: -10m)
-//  |> filter(fn: (r) => r._measurement == "measurement1")
-//  |> mean()`;
-
-// queryClient.queryRows(fluxQuery, {
-//   next: (row, tableMeta) => {
-//     const tableObject = tableMeta.toObject(row);
-//     console.log(tableObject);
-//   },
-//   error: (error) => {
-//     console.error("\nError", error);
-//   },
-//   complete: () => {
-//     console.log("\nSuccess");
-//   },
-// });
