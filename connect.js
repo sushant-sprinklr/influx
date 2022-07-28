@@ -10,7 +10,16 @@ const url = process.env.SERVER_URL;
 const client = new InfluxDB({ url, token });
 let org = process.env.ORG_NAME;
 let bucket = `testBucket`;
+
 let writeApi = client.getWriteApi(org, bucket, "ns");
+// let errorWriteApi = client.getWriteApi(org, "errorBucket", "ns");
+// let point2 = new Point("measurement1")
+//   .tag("fails", "1")
+//   .floatField("errors", 2);
+
+// errorWriteApi.writePoint(point2);
+// errorWriteApi.flush();
+// console.log(point2);
 
 ws.addEventListener("message", (e) => {
   var dataString = e.data.toString();
@@ -19,8 +28,7 @@ ws.addEventListener("message", (e) => {
 
   let influxTime = new Date(dataOut.request_time).valueOf();
   let point = new Point("measurement1")
-    .timestamp(influxTime)
-    .intField("http_status_code", dataOut.http_status_code)
+    .tag("http_status_code", dataOut.http_status_code)
     .stringField("uri", dataOut.uri)
     .stringField("request_host_name", dataOut.request_host_name)
     .stringField("src_ip", dataOut.src_ip)
