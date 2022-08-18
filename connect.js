@@ -12,14 +12,8 @@ let org = process.env.ORG_NAME;
 let bucket = `testBucket`;
 
 let writeApi = client.getWriteApi(org, bucket, "ns");
-// let errorWriteApi = client.getWriteApi(org, "errorBucket", "ns");
-// let point2 = new Point("measurement1")
-//   .tag("fails", "1")
-//   .floatField("errors", 2);
 
-// errorWriteApi.writePoint(point2);
-// errorWriteApi.flush();
-// console.log(point2);
+let map = new Map();
 
 ws.addEventListener("message", (e) => {
   var dataString = e.data.toString();
@@ -29,6 +23,8 @@ ws.addEventListener("message", (e) => {
   let influxTime = new Date(dataOut.request_time).valueOf();
   let point = new Point("measurement1")
     .tag("http_status_code", dataOut.http_status_code)
+    .tag("api_key", dataOut.api_key)
+    .tag("total_request_exec_time", dataOut.total_request_exec_time)
     .stringField("uri", dataOut.uri)
     .stringField("request_host_name", dataOut.request_host_name)
     .stringField("src_ip", dataOut.src_ip)
@@ -39,7 +35,6 @@ ws.addEventListener("message", (e) => {
     .stringField("referrer", dataOut.referrer)
     .stringField("user_agent", dataOut.user_agent)
     .stringField("request_id", dataOut.request_id)
-    .stringField("api_key", dataOut.api_key)
     .stringField("service_id", dataOut.service_id)
     .stringField("traffic_manager", dataOut.traffic_manager)
     .stringField("api_method_name", dataOut.api_method_name)
@@ -48,7 +43,6 @@ ws.addEventListener("message", (e) => {
       "traffic_manager_error_code",
       dataOut.traffic_manager_error_code
     )
-    .floatField("total_request_exec_time", dataOut.total_request_exec_time)
     .floatField("remote_total_time", dataOut.remote_total_time)
     .floatField("connect_time", dataOut.connect_time)
     .floatField("pre_transfer_time", dataOut.pre_transfer_time)
